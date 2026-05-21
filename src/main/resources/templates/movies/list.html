@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Films — Ciné-Club</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<nav class="nav">
+  <a th:href="@{/}" class="nav-brand">Ciné<span>Club</span></a>
+
+  <div class="nav-links">
+    <a th:href="@{/movies}"    class="nav-link">Films</a>
+    <a th:href="@{/directors}" class="nav-link">Réalisateurs</a>
+  </div>
+
+  <div class="nav-end">
+    <span sec:authorize="!isAuthenticated()">
+      <a th:href="@{/login}"    class="btn btn-ghost btn-sm">Connexion</a>
+      <a th:href="@{/register}" class="btn btn-primary btn-sm">Inscription</a>
+    </span>
+    <span sec:authorize="isAuthenticated()" style="display:inline-flex;align-items:center;gap:.75rem;">
+      <span class="nav-user-name" sec:authentication="name"></span>
+      <span sec:authorize="hasRole('ADMIN')" class="nav-role">Admin</span>
+      <a sec:authorize="hasRole('ADMIN')" th:href="@{/movies/new}" class="btn btn-primary btn-sm">+ Ajouter</a>
+      <a th:href="@{/logout}" class="btn btn-ghost btn-sm">Déconnexion</a>
+    </span>
+  </div>
+</nav>
+
+<div class="page-wrapper">
+  <div class="container">
+
+    <div class="page-header">
+      <div class="page-header-inner">
+        <div>
+          <h1 class="page-title anim d1">Films</h1>
+          <p class="page-subtitle anim d2">Catalogue complet du Ciné-Club</p>
+        </div>
+        <div sec:authorize="hasRole('ADMIN')" class="anim d2">
+          <a th:href="@{/movies/new}" class="btn btn-primary">+ Nouveau film</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-wrapper anim d3">
+      <table>
+        <thead>
+          <tr>
+            <th>Titre</th>
+            <th>Année</th>
+            <th>Genre</th>
+            <th>Réalisateur</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="movie : ${movies}">
+            <td th:text="${movie.title}"></td>
+            <td>
+              <span class="badge badge-gold" th:text="${movie.releaseYear}"></span>
+            </td>
+            <td>
+              <span class="badge badge-accent" th:text="${movie.genre}"></span>
+            </td>
+            <td th:text="${movie.directorFullName}"></td>
+            <td style="text-align:right;">
+              <a th:href="@{/movies/{id}(id=${movie.id})}"
+                 class="btn btn-ghost btn-sm">Détail →</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

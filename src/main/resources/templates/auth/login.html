@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Connexion — Ciné-Club</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<nav class="nav">
+  <a th:href="@{/}" class="nav-brand">Ciné<span>Club</span></a>
+  <div class="nav-end">
+    <a th:href="@{/login}"    class="btn btn-ghost btn-sm">Connexion</a>
+    <a th:href="@{/register}" class="btn btn-primary btn-sm">Inscription</a>
+  </div>
+</nav>
+
+<div class="page-wrapper">
+  <div class="auth-wrapper">
+    <div class="auth-inner">
+
+      <a th:href="@{/}" class="auth-logo">Ciné<span>Club</span></a>
+
+      <h1 class="auth-title anim d1">Bon retour.</h1>
+      <p class="auth-sub anim d2">Connectez-vous pour accéder au catalogue.</p>
+
+      <div th:if="${error}" class="alert alert-error anim" th:text="${error}"></div>
+
+      <div class="form-card anim d2">
+        <form method="post" th:action="@{/login}">
+
+          <div class="form-group">
+            <label class="form-label" for="email">Adresse email</label>
+            <input class="form-input" type="email" id="email" name="email"
+                   placeholder="vous@exemple.fr" required autofocus>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="password">Mot de passe</label>
+            <input class="form-input" type="password" id="password" name="password"
+                   placeholder="••••••••" required>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary" style="width:100%;">
+              Se connecter
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+      <p class="auth-footer">
+        Pas encore de compte ?
+        <a th:href="@{/register}">Créer un compte</a>
+      </p>
+
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

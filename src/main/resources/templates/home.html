@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ciné-Club — Catalogue de films</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a th:href="@{/}" class="nav-brand">Ciné<span>Club</span></a>
+
+  <div class="nav-links">
+    <a th:href="@{/movies}"    class="nav-link">Films</a>
+    <a th:href="@{/directors}" class="nav-link">Réalisateurs</a>
+  </div>
+
+  <div class="nav-end">
+    <span sec:authorize="!isAuthenticated()">
+      <a th:href="@{/login}"    class="btn btn-ghost btn-sm">Connexion</a>
+      <a th:href="@{/register}" class="btn btn-primary btn-sm">Inscription</a>
+    </span>
+    <span sec:authorize="isAuthenticated()" style="display:inline-flex;align-items:center;gap:.75rem;">
+      <span class="nav-user-name" sec:authentication="name"></span>
+      <span sec:authorize="hasRole('ADMIN')" class="nav-role">Admin</span>
+      <a sec:authorize="hasRole('ADMIN')" th:href="@{/movies/new}" class="btn btn-primary btn-sm">+ Ajouter</a>
+      <a th:href="@{/logout}" class="btn btn-ghost btn-sm">Déconnexion</a>
+    </span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="page-wrapper">
+  <section class="hero">
+    <div class="container">
+      <div class="hero-eyebrow">Catalogue de cinéma</div>
+
+      <h1 class="hero-title anim d1">
+        Le septième art,<br><em>réinventé.</em>
+      </h1>
+
+      <p class="hero-desc anim d2">
+        Explorez notre sélection de films d'auteur, de chefs-d'œuvre du cinéma mondial
+        et de réalisateurs qui ont marqué l'histoire du grand écran.
+      </p>
+
+      <div class="hero-actions anim d3">
+        <a th:href="@{/movies}"    class="btn btn-primary btn-lg">Explorer les films</a>
+        <a th:href="@{/directors}" class="btn btn-ghost btn-lg">Les réalisateurs</a>
+      </div>
+
+      <div class="hero-stats anim d4">
+        <div>
+          <div class="stat-num">5+</div>
+          <div class="stat-label">Films</div>
+        </div>
+        <div>
+          <div class="stat-num">3</div>
+          <div class="stat-label">Réalisateurs</div>
+        </div>
+        <div>
+          <div class="stat-num">∞</div>
+          <div class="stat-label">Émotions</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+</body>
+</html>

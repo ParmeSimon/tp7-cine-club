@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nouveau film — Ciné-Club</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<nav class="nav">
+  <a th:href="@{/}" class="nav-brand">Ciné<span>Club</span></a>
+
+  <div class="nav-links">
+    <a th:href="@{/movies}"    class="nav-link">Films</a>
+    <a th:href="@{/directors}" class="nav-link">Réalisateurs</a>
+  </div>
+
+  <div class="nav-end">
+    <span sec:authorize="isAuthenticated()" style="display:inline-flex;align-items:center;gap:.75rem;">
+      <span class="nav-user-name" sec:authentication="name"></span>
+      <span class="nav-role">Admin</span>
+      <a th:href="@{/logout}" class="btn btn-ghost btn-sm">Déconnexion</a>
+    </span>
+  </div>
+</nav>
+
+<div class="page-wrapper">
+  <div class="container">
+
+    <div class="page-header">
+      <a th:href="@{/movies}" class="btn btn-ghost btn-sm" style="margin-bottom:1.5rem;display:inline-flex;">← Retour</a>
+      <h1 class="page-title anim d1">Nouveau film</h1>
+      <p class="page-subtitle anim d2">Ajoutez une œuvre au catalogue.</p>
+    </div>
+
+    <div style="max-width:640px;" class="anim d2">
+      <div class="form-card">
+        <form method="post" th:action="@{/movies/new}">
+
+          <div class="form-group">
+            <label class="form-label" for="title">Titre</label>
+            <input class="form-input" type="text" id="title" name="title"
+                   placeholder="Ex. Inception" required>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="releaseYear">Année de sortie</label>
+              <input class="form-input" type="number" id="releaseYear" name="releaseYear"
+                     placeholder="2010" required min="1888" max="2100">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="durationMinutes">Durée (min)</label>
+              <input class="form-input" type="number" id="durationMinutes" name="durationMinutes"
+                     placeholder="148" required min="1" max="1000">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="genre">Genre</label>
+            <input class="form-input" type="text" id="genre" name="genre"
+                   placeholder="Ex. Science-fiction" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="synopsis">Synopsis</label>
+            <textarea class="form-textarea" id="synopsis" name="synopsis"
+                      placeholder="Résumé du film…"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="directorId">Réalisateur</label>
+            <select class="form-select" id="directorId" name="directorId" required>
+              <option value="">— Sélectionner —</option>
+              <option th:each="director : ${directors}"
+                      th:value="${director.id}"
+                      th:text="${director.firstName} + ' ' + ${director.lastName}">
+              </option>
+            </select>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Créer le film</button>
+            <a th:href="@{/movies}" class="btn btn-ghost">Annuler</a>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

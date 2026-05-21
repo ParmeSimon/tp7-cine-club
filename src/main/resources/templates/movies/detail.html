@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title th:text="${movie.title} + ' — Ciné-Club'">Détail film — Ciné-Club</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<nav class="nav">
+  <a th:href="@{/}" class="nav-brand">Ciné<span>Club</span></a>
+
+  <div class="nav-links">
+    <a th:href="@{/movies}"    class="nav-link">Films</a>
+    <a th:href="@{/directors}" class="nav-link">Réalisateurs</a>
+  </div>
+
+  <div class="nav-end">
+    <span sec:authorize="!isAuthenticated()">
+      <a th:href="@{/login}"    class="btn btn-ghost btn-sm">Connexion</a>
+      <a th:href="@{/register}" class="btn btn-primary btn-sm">Inscription</a>
+    </span>
+    <span sec:authorize="isAuthenticated()" style="display:inline-flex;align-items:center;gap:.75rem;">
+      <span class="nav-user-name" sec:authentication="name"></span>
+      <span sec:authorize="hasRole('ADMIN')" class="nav-role">Admin</span>
+      <a sec:authorize="hasRole('ADMIN')" th:href="@{/movies/new}" class="btn btn-primary btn-sm">+ Ajouter</a>
+      <a th:href="@{/logout}" class="btn btn-ghost btn-sm">Déconnexion</a>
+    </span>
+  </div>
+</nav>
+
+<div class="page-wrapper">
+  <div class="container">
+
+    <div class="page-header">
+      <a th:href="@{/movies}" class="btn btn-ghost btn-sm" style="margin-bottom:1.5rem;display:inline-flex;">← Retour</a>
+      <h1 class="page-title anim d1" th:text="${movie.title}"></h1>
+    </div>
+
+    <div class="detail-grid anim d2">
+
+      <div class="detail-item full">
+        <span class="detail-label">Titre</span>
+        <span class="detail-value serif" th:text="${movie.title}"></span>
+      </div>
+
+      <div class="detail-item">
+        <span class="detail-label">Année de sortie</span>
+        <span class="detail-value" th:text="${movie.releaseYear}"></span>
+      </div>
+
+      <div class="detail-item">
+        <span class="detail-label">Genre</span>
+        <span class="detail-value">
+          <span class="badge badge-accent" th:text="${movie.genre}"></span>
+        </span>
+      </div>
+
+      <div class="detail-item">
+        <span class="detail-label">Durée</span>
+        <span class="detail-value" th:text="${movie.durationMinutes} + ' min'"></span>
+      </div>
+
+      <div class="detail-item">
+        <span class="detail-label">Réalisateur</span>
+        <span class="detail-value"
+              th:text="${movie.director.firstName} + ' ' + ${movie.director.lastName}"></span>
+      </div>
+
+      <div class="detail-item full">
+        <span class="detail-label">Synopsis</span>
+        <p class="synopsis-text" th:text="${movie.synopsis}"></p>
+      </div>
+
+    </div>
+
+    <div style="margin-top:2rem;" class="anim d3">
+      <a th:href="@{/movies}" class="btn btn-ghost">← Tous les films</a>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: tp7-cineclub-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: ${DB_NAME:-cineclubdb}
+      POSTGRES_USER: ${DB_USERNAME:-cineclubuser}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-changeme}
+    ports:
+      - "5440:5432"
+    volumes:
+      - postgres_data_tp7:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-cineclubuser}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: tp7-cineclub-app
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-cineclubdb}
+      DB_USERNAME: ${DB_USERNAME:-cineclubuser}
+      DB_PASSWORD: ${DB_PASSWORD:-changeme}
+      JWT_SECRET: ${JWT_SECRET:-cineclub-super-secret-key-256bits-minimum-32chars!}
+      JWT_ACCESS_EXPIRATION: ${JWT_ACCESS_EXPIRATION:-900000}
+      JWT_REFRESH_EXPIRATION: ${JWT_REFRESH_EXPIRATION:-604800000}
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_data_tp7:
